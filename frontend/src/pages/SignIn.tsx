@@ -17,7 +17,7 @@ const SignIn = () => {
 
     const mutation = useMutation(apiClient.SignIn, {
         onSuccess: async() => {
-            showToast({messsage: 'Sign In Succesful!', type: "SUCCESS"});
+            showToast({messsage: 'Sign In Successful', type: "SUCCESS"});
             await queryClient.invalidateQueries('validateToken');
             navigate("/")       
         },onError: (error: Error) => {
@@ -65,7 +65,3 @@ const SignIn = () => {
 }
 
 export default SignIn;
-
-function handleSubmit(arg0: () => void) {
-    throw new Error("Function not implemented.");
-}
