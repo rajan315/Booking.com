@@ -1,35 +1,41 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 type ToastProps = {
-    message: string,
-    type: "SUCCESS" | "ERROR",
+    message: string;
+    type: "SUCCESS" | "ERROR";
     onClose: () => void;
-}
+};
 
-const Toast = ({message,type, onClose}: ToastProps) => {
-    
+const Toast = ({ message, type, onClose }: ToastProps) => {
     useEffect(() => {
-        const timer = setTimeout(()=> {
+        const timer = setTimeout(() => {
             onClose();
-        }, 1000);
+        }, 3000); // Adjust timeout duration as needed
 
         return () => {
             clearTimeout(timer);
         };
     }, [onClose]);
 
-    const styles = type === "SUCCESS"
-    ?"fixed top-4 right-4 z-50 p-4 rounded-md bg-green-600 text-white max-w-md"
-    :"fixed top-4 right-4 z-50 p-4 rounded-md bg-red-600 text-white max-w-md"
-    return(
-        <div className={styles}>
+    const toastStyles =
+        type === "SUCCESS"
+            ? "bg-green-500"
+            : "bg-red-500";
+
+    const textStyles = "text-white";
+
+    const containerStyles =
+        "fixed top-4 right-4 z-50 p-4 rounded-md max-w-xs md:max-w-md";
+
+    return (
+        <div className={`${containerStyles} ${toastStyles} ${textStyles}`}>
             <div className="flex justify-center items-center">
-                <span className="text-lg font-semibold">
+                <span className="text-sm md:text-lg font-semibold">
                     {message}
                 </span>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Toast;
