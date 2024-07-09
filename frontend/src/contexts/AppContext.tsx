@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import * as apiClient from '../api-client';
 
 type ToastMessage = {
-    messsage: string,
+    message: string,
     type: "SUCCESS" | "ERROR";
 }
 
@@ -27,7 +27,7 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
             },
             isLoggedIn: !isError
         }}>
-            {toast && (<Toast message= {toast.messsage} type={toast.type} onClose= {() => setToast(undefined)}/>)}
+            {toast && (<Toast message= {toast.message} type={toast.type} onClose= {() => setToast(undefined)}/>)}
             {children}
         </AppContext.Provider>
     );

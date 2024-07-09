@@ -23,18 +23,23 @@ router.post("/",
         body("description").notEmpty().withMessage('description is required.'),
         body("type").notEmpty().withMessage('Hotel type is required.'),
         body("pricePerNight").notEmpty().isNumeric().withMessage('pricePerNight is required.'),
-        body("facilities").notEmpty().isArray().withMessage('facilities is required.'),
+        body("facilities").notEmpty().isArray().withMessage('facilities are required.'),
     ],
     upload.array("imageFiles", 6), async(req: Request, res: Response) => {
     try{
         const imageFiles = req.files as Express.Multer.File[];
         const newHotel: HotelType = req.body;
 
-        const uploadPromises = imageFiles.map(async(image) => {
+        const uploadPromises = imageFiles.map(async (image) => {
             const b64 = Buffer.from(image.buffer).toString("base64");
-            let dataURI = "data" + image.mimetype + ";base64," + b64;
-            const res = await cloudinary.v2.uploader.upload(dataURI);
-            return res.url;
+            const dataURI = `data:${image.mimetype};base64,${b64}`;
+            try {
+                const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+                return uploadResponse.url;
+            } catch (error) {
+                console.error("Error uploading image to Cloudinary:", error);
+                throw error; // Rethrow to handle in your catch block
+            }
         });
 
         const imageUrls = await Promise.all(uploadPromises);
